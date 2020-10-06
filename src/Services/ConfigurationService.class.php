@@ -1,12 +1,14 @@
 <?php
 
 require_once(__DIR__.'/../Entities/Team.class.php');
+require_once(__DIR__.'/../Exceptions/eqhbConfigurationException.class.php');
 
 class ConfigurationService
 {
     private $baseUrl;
     protected $teams = [];
     protected $tables = [];
+    protected $post = ['teams' => [], 'weekends' => []];
     
     public function __construct() {
         $fcontent = file_get_contents(__DIR__.'/../../config/config.json');
@@ -17,7 +19,9 @@ class ConfigurationService
         $this
             ->setBaseUrl($config['base_url'])
             ->setTeams($config['teams'])
-            ->setTables($config['tables']);
+            ->setTables($config['tables'])
+            ->setPostWeekends($_POST['weekends'])
+            ->setPostTeams($_POST['teams']);
     }
     
     public static function create() {
@@ -28,19 +32,52 @@ class ConfigurationService
         return $this->tables;
     }
     public function getTeams() {
-        $teams = [];
-        foreach ( $this->teams as $eqhb => $team ) {
-            $teams[] = Team::create()
-                ->setApiURL($this->getBaseUrl().$team['id'])
-                ->setFfhbName($team['ffhb'])
-                ->setEqhbName($eqhb);
-        }
-        return $teams;
+        return $this->teams;
     }
     public function getBaseUrl() {
         return $this->baseUrl;
     }
+    public function getPostWeekends() {
+        return $this->post['weekends'];
+    }
+    public function getPostTeams() {
+        return $this->post['teams'];
+    }
     
+    protected function setPost($var, $values) {
+        if ( !array_key_exists($var, $this->post) ) {
+            throw new eqhbConfigurationException("POST variable $var is not expected.");
+        }
+        $values = explode(',', $values);
+        foreach ( $values as $value ) {
+            $this->post[$var][] = trim($value);
+        }
+        return $this;
+    }
+    public function setPostWeekends($values) {
+        $this->setPost('weekends', $values);
+        
+        // verify values
+        foreach ( $this->post['weekends'] as $i => $we ) {
+            if ( preg_match('/\d\d\d\d-\d\d-\d\d/', $we) !== 1 ) {
+                unset($this->post['weekends'][$i]);
+            }
+        }
+        
+        return $this;
+    }
+    public function setPostTeams($values) {
+        $this->setPost('teams', $values);
+        
+        // verify values
+        foreach ( $this->post['teams'] as $i => $team ) {
+            if ( !in_array($team, $this->getTeamEqhbNames()) ) {
+                unset($this->post['teams'][$i]);
+            }
+        }
+        
+        return $this;
+    }
     public function setTables(array $tables) {
         foreach ( $tables as $i => $table ) {
             if ( !array_key_exists('name', $table) ) {
@@ -64,11 +101,24 @@ class ConfigurationService
         return $this;
     }
     public function setTeams($teams) {
-        $this->teams = $teams;
+        foreach ( $teams as $eqhb => $team ) {
+            $this->teams[] = Team::create()
+                ->setApiURL($this->getBaseUrl().$team['id'])
+                ->setFfhbName($team['ffhb'])
+                ->setEqhbName($eqhb);
+        }
         return $this;
     }
     public function setBaseUrl($baseUrl) {
         $this->baseUrl = $baseUrl;
         return $this;
+    }
+    
+    public function getTeamEqhbNames() {
+        $arr = [];
+        foreach ( $this->getTeams() as $team ) {
+            $arr[] = $team->getEqhbName();
+        }
+        return $arr;
     }
 }

@@ -15,9 +15,11 @@ $fetcher->setTeams($teams);
 
 $data = $fetcher->getData();
 $generator = new TableGeneratorService($data);
-//echo $generator->getTable(['SG3']);
-//echo $generator->getTable(['SG1', 'SG2', 'SG3', 'SF1', 'SF2']);
-//echo $generator->getTable(null, ['2020-10-03']);
+
+// on demand
+echo $generator->getTable('Sur mesure', $config->getPostTeams(), $config->getPostWeekends());
+
+// preconfigured
 foreach ( $config->getTables() as $table ) {
     echo $generator->getTable($table['name'], $table['teams'], $table['weekends']);
 }
