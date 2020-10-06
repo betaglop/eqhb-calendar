@@ -21,6 +21,7 @@ echo $generator->getTable('Sur mesure', $config->getPostTeams(), $config->getPos
 
 // preconfigured
 foreach ( $config->getTables() as $table ) {
+    echo '<hr/>';
     echo $generator->getTable($table['name'], $table['teams'], $table['weekends']);
 }
 
