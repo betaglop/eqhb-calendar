@@ -59,7 +59,7 @@ class ConfigurationService
         
         // verify values
         foreach ( $this->post['weekends'] as $i => $we ) {
-            if ( preg_match('/\d\d\d\d-\d\d-\d\d/', $we) !== 1 ) {
+            if ( preg_match('/^\d\d\d\d-\d\d-\d\d/$', $we) !== 1 ) {
                 unset($this->post['weekends'][$i]);
             }
         }
