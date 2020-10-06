@@ -9,6 +9,7 @@
         </style>
     </head>
     <body>
+        <h1>Utilitaire de génération de calendriers de compétition de l'EQHB</h1>
         <form id="query" action="" method="post">
             <?php require_once('./src/Services/ConfigurationService.class.php') ?>
             <?php $config = new ConfigurationService; ?>
@@ -18,6 +19,15 @@
                 <tr><td colspan="3"><input type="submit" name="submit" value="submit" /></td></tr>
             </table>
         </form>
-        <div id="result"><?php require('./test.php'); ?></div>
+        <div id="result"><?php require('./engine.php'); ?></div>
+        <div id="license">
+                <h2>License</h2>
+                <p>This program fetches data from the Fédération Française de Handball and generates HTML tables ready to be integrated into a website or an other document.</p>
+                <p>Copyright (C) 2020 Baptiste LARVOL-SIMON [beta AT e-glop.net]</p>
+                <p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License.
+                <p>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.</p>
+                <p>You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.</p>
+                <p>You should retrieve the source code of this program at <a href="https://github.com/betaglop/eqhb-calendar" target="_blank">https://github.com/betaglop/eqhb-calendar</a></p>
+        </div>
     </body>
 </html>
