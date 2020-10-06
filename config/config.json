@@ -1,0 +1,36 @@
+{
+    "teams": {
+        "SG1": {
+            "ffhb": "ERGUE QUIMPER HB 1",
+            "id": "78265"
+        },
+        "SG2": {
+            "ffhb": "ERGUE QUIMPER HB 2",
+            "id": "78280"
+        },
+        "SG3": {
+            "ffhb": "ERGUE QUIMPER HANDBALL 3 ",
+            "id": "78287"
+        },
+        "SF1": {
+            "ffhb": "ERGUE QUIMPER HB 1",
+            "id": "78290"
+        },
+        "SF2": {
+            "ffhb": "ERGUE QUIMPER 2",
+            "id": "82592"
+        }
+    },
+    "tables": [{
+            "name": "Senior",
+            "teams": ["SG1", "SG2", "SG3", "SF1", "SF2"],
+            "weekends": []
+        },
+        {
+            "name": "SG1+SF1 03/10/2020",
+            "teams": ["SG1", "SF1"],
+            "weekends": ["2020-10-03"]
+        }
+    ],
+    "base_url": "https://jjht57whqb.execute-api.us-west-2.amazonaws.com/prod/pool/"
+}
